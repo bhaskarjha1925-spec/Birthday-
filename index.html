@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,7 +28,6 @@
         
         .cake-emoji { font-size: 4.5rem; margin: 15px 0; animation: float 1.5s infinite alternate; }
         
-        /* REAL SLIDER / CAROUSEL */
         .slider-container {
             position: relative; width: 280px; height: 280px; margin: 25px auto;
             overflow: hidden; border-radius: 20px; border: 4px solid white;
@@ -38,8 +38,6 @@
         
         .wish-box { font-size: 1.05rem; line-height: 1.7; color: #f5f5f5; font-style: italic; background: rgba(255,255,255,0.05); padding: 20px; border-radius: 20px; margin-top: 15px; border: 1px solid rgba(255,255,255,0.1); }
         .hidden { display: none !important; }
-        .preview-btn { margin-top: 20px; padding: 12px 24px; background: linear-gradient(45deg, #ff007f, #ffd700); color: white; border: none; border-radius: 50px; font-weight: bold; font-size: 1rem; cursor: pointer; box-shadow: 0 5px 15px rgba(255, 0, 127, 0.4); }
-        
         @keyframes float { 0% { transform: translateY(0); } 100% { transform: translateY(-12px); } }
     </style>
 </head>
@@ -48,29 +46,26 @@
     <div class="decorations">🎈✨🎉🎂🎉✨🎈</div>
 
     <div class="container">
-        <!-- COUNTDOWN SCREEN -->
+        <!-- COUNTDOWN SCREEN (No preview button!) -->
         <div id="countdown-screen">
             <h1 class="name">RADHA</h1>
-            <p style="color: #00f0ff; font-size: 1.2rem; font-weight: bold; margin-top: 5px;">Surprise Lock Hai... 🤫</p>
+            <p style="color: #00f0ff; font-size: 1.2rem; font-weight: bold; margin-top: 5px;">Aapka Surprise Lock Hai... 🤫</p>
             <div class="timer-display">
                 <div class="time-unit"><span class="number" id="days">00</span><span class="label">Days</span></div>
                 <div class="time-unit"><span class="number" id="hours">00</span><span class="label">Hrs</span></div>
                 <div class="time-unit"><span class="number" id="minutes">00</span><span class="label">Mins</span></div>
                 <div class="time-unit"><span class="number" id="seconds">00</span><span class="label">Secs</span></div>
             </div>
-            <p style="color: #ffd700; font-size: 0.9rem; font-weight: bold;">8 July Midnight Ko Khulega!</p>
-            <button class="preview-btn" onclick="previewSurprise()">Live Preview Chek Karo 👁️</button>
+            <p style="color: #ffd700; font-size: 0.9rem; font-weight: bold;">8 July Midnight Ko Apne Aap Khulega!</p>
         </div>
 
-        <!-- CELEBRATION SCREEN -->
+        <!-- CELEBRATION SCREEN (Locked tight) -->
         <div id="celebration-screen" class="hidden">
-            <h1 class="name">🥳 HAPPY BIRTHDAY RADHA! 🎁</h1>
+            <h1 class="name">🥳 HAPPY BIRTHDAY RADHA! Di 🎁</h1>
             <div class="cake-emoji">🎂</div>
             
-            <!-- PHOTO SLIDER -->
             <div class="slider-container">
                 <div class="slider" id="photoSlider">
-                    <!-- YAHAN TERE CHROME SE UPLOAD KI HUI PHOTOS APPEAR HONGI -->
                     <img src="photo1.jpg" class="slide" alt="Radha 1">
                     <img src="photo2.jpg" class="slide" alt="Radha 2">
                     <img src="photo3.jpg" class="slide" alt="Radha 3">
@@ -78,7 +73,7 @@
             </div>
 
             <div class="wish-box">
-                <p>"Happy Birthday Radha! Meri har badmashi mein sath dene ke liye, aur har daant se mujhe bachane ke liye thank you. Tu duniya ki sabse achhi sister hai. Bhagwan kare tera yeh saal khushiyon se bhara ho."</p>
+                <p>"Happy Birthday Radha! Di Meri har badmashi mein sath dene ke liye, aur har daant se mujhe bachane ke liye thank you. Tum duniya ki sabse achhi sister ho. Bhagwan kare tumhara yeh saal khushiyon se bhara ho."</p>
                 <p style="color: #ffd700; font-weight: bold; font-style: normal; margin-top: 15px; font-size: 1.1rem;">With love, Bhaskar ❤️</p>
             </div>
         </div>
@@ -91,6 +86,12 @@
             const now = new Date().getTime();
             const diff = targetDate - now;
 
+            if (diff < 0) {
+                clearInterval(countdownInterval);
+                showCelebration();
+                return;
+            }
+
             const d = Math.floor(diff / (1000 * 60 * 60 * 24));
             const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
@@ -102,28 +103,22 @@
                 document.getElementById("minutes").innerText = m < 10 ? "0" + m : m;
                 document.getElementById("seconds").innerText = s < 10 ? "0" + s : s;
             }
-
-            if (diff < 0) {
-                clearInterval(countdownInterval);
-                showCelebration();
-            }
         }, 1000);
 
-        function previewSurprise() { showCelebration(); startSlider(); }
         function showCelebration() {
             document.getElementById("countdown-screen").classList.add("hidden");
             document.getElementById("celebration-screen").classList.remove("hidden");
             startSlider();
         }
 
-        // Automatic Sliding Logic
         function startSlider() {
             const slider = document.getElementById('photoSlider');
+            if(!slider) return;
             let index = 0;
             setInterval(() => {
-                index = (index + 1) % 3; // 3 photos hain toh % 3
+                index = (index + 1) % 3;
                 slider.style.transform = `translateX(-${index * 100}%)`;
-            }, 2500); // Har 2.5 second mein image badlegi
+            }, 2500);
         }
     </script>
 </body>
